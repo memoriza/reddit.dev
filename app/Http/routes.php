@@ -11,48 +11,48 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// Route::get('/uppercase/{name}', function ($name = "World") {
 
-// 	if($name == 'dylan') {
-// 		return "HOWDY " . strtoupper($name). "!!!";
-// 	}
-//     return "Hello," . strtoupper(" " . $name . "!");
 
-// });
+Route::get('/increment/{number}', function ($number) {
 
-// Route::get('/increment/{number}', function ($number = 1) {
+	if (is_numeric($number)) {
 
-// 		return ++$number;
+		$data = ['number' => $number];
 
-// });
+	}
 
-// Route::get('/add/{number}/{number2}', function ($number, $number2) {
+	return view('increment', $data);
 
-// 	return $number + $number2;
+});
 
-// });
+Route::get('/add/{number}/{number2}', function ($number, $number2) {
 
-// Route::get('/sayhello/{name}', function($name = "World") {
+	return $number + $number2;
 
-// 	$data = array('name' => $name);
+});
 
-//     return view('my-first-view', $data);
+Route::get('/sayhello/{name}', function ($name = "World") {
 
-// });
+	if($name == 'dylan') {
+		return "HOWDY " . strtoupper($name). "!!!";
+	}
+    return "Hello," . strtoupper(" " . $name . "!");
 
-// Route::get('/roll-dice/{guess}', function ($guess) {
+});
 
+Route::get('/uppercase/{word}/', function ($word) {
 	
+	$data = ['upperword' => strtoupper($word), 'word' => $word];
 
-// 	if ($diceroll === $guess) {
-// 		return view('roll-dice', $diceroll);
-// 	}
+	return view('uppercase', $data);
 
-// });
+});
+
+
 
 Route::get('/roll-dice/{guess}', function($guess = 1)
 
