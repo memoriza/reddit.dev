@@ -11,27 +11,65 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/uppercase/{name}', function ($name = "World") {
+// Route::get('/uppercase/{name}', function ($name = "World") {
 
-	if($name == 'dylan') {
-		return "HOWDY " . strtoupper($name). "!!!";
+// 	if($name == 'dylan') {
+// 		return "HOWDY " . strtoupper($name). "!!!";
+// 	}
+//     return "Hello," . strtoupper(" " . $name . "!");
+
+// });
+
+// Route::get('/increment/{number}', function ($number = 1) {
+
+// 		return ++$number;
+
+// });
+
+// Route::get('/add/{number}/{number2}', function ($number, $number2) {
+
+// 	return $number + $number2;
+
+// });
+
+// Route::get('/sayhello/{name}', function($name = "World") {
+
+// 	$data = array('name' => $name);
+
+//     return view('my-first-view', $data);
+
+// });
+
+// Route::get('/roll-dice/{guess}', function ($guess) {
+
+	
+
+// 	if ($diceroll === $guess) {
+// 		return view('roll-dice', $diceroll);
+// 	}
+
+// });
+
+Route::get('/roll-dice/{guess}', function($guess = 1)
+
+{
+	$diceroll = random_int(1, 6);
+
+	$data = [];
+
+	$data['guess'] = $guess;
+	$data['diceroll'] = $diceroll;
+
+	if(!is_numeric($guess) || $guess > 6 || $guess < 1)
+		return "you guessed a non numeric number of your guess was not between 1 and 6";
+
+	if ($data['guess'] == $data['diceroll']) {
+		echo "you matched the guess and number!!!";
 	}
-    return "Hello," . strtoupper(" " . $name . "!");
-
-});
-
-Route::get('/increment/{number}', function ($number = 1) {
-
-		return ++$number;
-
-});
-
-Route::get('/add/{number}/{number2})', function ($number, $number2) {
-
-	return $number + $number2;
-
+    return view('roll-dice', $data);
+		   
 });
