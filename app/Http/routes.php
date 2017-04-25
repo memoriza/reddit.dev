@@ -11,23 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
-Route::get('/increment/{number}', function ($number) {
-
-	if (is_numeric($number)) {
-
-		$data = ['number' => $number];
-
-	}
-
-	return view('increment', $data);
-
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/add/{number}/{number2}', function ($number, $number2) {
 
@@ -43,16 +29,6 @@ Route::get('/sayhello/{name}', function ($name = "World") {
     return "Hello," . strtoupper(" " . $name . "!");
 
 });
-
-Route::get('/uppercase/{word}/', function ($word) {
-	
-	$data = ['upperword' => strtoupper($word), 'word' => $word];
-
-	return view('uppercase', $data);
-
-});
-
-
 
 Route::get('/roll-dice/{guess}', function($guess = 1)
 
@@ -73,3 +49,15 @@ Route::get('/roll-dice/{guess}', function($guess = 1)
     return view('roll-dice', $data);
 		   
 });
+
+Route::get('/', 'HomeController@showWelcome');
+
+Route::get('/increment/{number}', 'HomeController@increment');
+
+Route::get('/uppercase/{word}/', 'HomeController@uppercase');
+
+
+
+
+
+
