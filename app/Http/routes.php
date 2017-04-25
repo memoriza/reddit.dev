@@ -11,9 +11,10 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+	
+    return view('welcome');
+});
 
 Route::get('/add/{number}/{number2}', function ($number, $number2) {
 
