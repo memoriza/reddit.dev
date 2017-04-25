@@ -11,51 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-	
-    return view('welcome');
-});
+Route::get('/add/{number}/{number2}', 'HomeController@add');
 
-Route::get('/add/{number}/{number2}', function ($number, $number2) {
+Route::get('/sayhello/{name}', 'HomeController@sayHello');
 
-	return $number + $number2;
-
-});
-
-Route::get('/sayhello/{name}', function ($name = "World") {
-
-	if($name == 'dylan') {
-		return "HOWDY " . strtoupper($name). "!!!";
-	}
-    return "Hello," . strtoupper(" " . $name . "!");
-
-});
-
-Route::get('/roll-dice/{guess}', function($guess = 1)
-
-{
-	$diceroll = random_int(1, 6);
-
-	$data = [];
-
-	$data['guess'] = $guess;
-	$data['diceroll'] = $diceroll;
-
-	if(!is_numeric($guess) || $guess > 6 || $guess < 1)
-		return "you guessed a non numeric number of your guess was not between 1 and 6";
-
-	if ($data['guess'] == $data['diceroll']) {
-		echo "you matched the guess and number!!!";
-	}
-    return view('roll-dice', $data);
-		   
-});
+Route::get('/rolldice/{guess}', 'HomeController@rolldice'); 
 
 Route::get('/', 'HomeController@showWelcome');
 
 Route::get('/increment/{number}', 'HomeController@increment');
 
 Route::get('/uppercase/{word}/', 'HomeController@uppercase');
+
+//CRUD operations for posts
+
+Route::resource('posts', 'PostsController');
+
+
+
 
 
 

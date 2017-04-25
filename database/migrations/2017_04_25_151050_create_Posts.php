@@ -13,7 +13,7 @@ class CreatePosts extends Migration
     public function up()
     {
         
-        Schema::create('Posts', function(Blueprint $table) {
+        Schema::create('posts', function(Blueprint $table) {
 
             $table->increments('id');
             $table->string('title');
@@ -35,6 +35,6 @@ class CreatePosts extends Migration
      */
     public function down()
     {
-         Schema::drop('Posts');
+         Schema::drop('posts');
     }
 }

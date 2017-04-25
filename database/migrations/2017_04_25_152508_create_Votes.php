@@ -12,7 +12,7 @@ class CreateVotes extends Migration
      */
     public function up()
     {
-        Schema::create('Votes', function(Blueprint $table) 
+        Schema::create('votes', function(Blueprint $table) 
         {
 
             $table->increments('id');
@@ -21,7 +21,7 @@ class CreateVotes extends Migration
             $table->integer('vote');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('post_id')->references('id')->on('Posts');
+            $table->foreign('post_id')->references('id')->on('posts');
 
         });
     }
@@ -33,6 +33,6 @@ class CreateVotes extends Migration
      */
     public function down()
     {
-        Schema::drop('Votes');
+        Schema::drop('votes');
     }
 }
