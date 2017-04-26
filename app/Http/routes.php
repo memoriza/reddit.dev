@@ -27,6 +27,25 @@ Route::get('/uppercase/{word}/', 'HomeController@uppercase');
 
 Route::resource('posts', 'PostsController');
 
+Route::get('orm-test', function() {
+
+	// $user = new \App\User();
+	// $user->name = 'Kyle';
+	// $user->email = 'kyle@gmail.com';
+	// $user->password = 'password';
+	// $user->save();
+
+	// $post = new \App\Models\Post();
+	// $post->title = 'My first post';
+	// $post->content = 'My first post content';
+	// $post->url = 'http://codeup.com';
+	// $post->created_by = $user->id;
+	// $post->save();
+
+	return \App\Models\Post::all();
+
+});
+
 
 
 

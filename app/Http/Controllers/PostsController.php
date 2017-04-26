@@ -26,7 +26,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+         return view('posts.create');
     }
 
     /**
@@ -37,7 +37,7 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        return 'this is the store';
+        return back()->withInput();
     }
 
     /**
@@ -59,7 +59,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return "what is up edit";
+       return view('posts.edit');
     }
 
     /**
@@ -71,7 +71,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return "what is up update";
+          return back()->withInput();
     }
 
     /**
@@ -81,7 +81,8 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+
     {
-        return "what is up destroy";
+          return "data deleted from ID " . $id;
     }
 }
