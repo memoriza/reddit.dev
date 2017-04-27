@@ -10,6 +10,12 @@
 <body>
 	<main class="container">
 
+		@if (Session::has('successMessage'))
+			<div class"alert alert-success">{{ session('successMessage') }}</div>
+		@endif
+		@if (Session::has('errorMessage'))
+			<div class="alert alert-danger">{{ session('errorMessage') }}</div>
+		@endif
 		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@showWelcome') }}">Welcome</a></p>
 		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@uppercase') }}">UPPERCASE</a></p>
 		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@rolldice') }}">Dice Roll</a></p>

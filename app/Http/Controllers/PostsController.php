@@ -17,7 +17,7 @@ class PostsController extends Controller
      */
     public function index()
     {   
-        $posts = \App\Models\Post::paginate(4);
+        $posts = \App\Models\Post::orderBy('created_at')->paginate(4);
         $data['posts'] = $posts;
         return view('posts.index', $data);
     }
@@ -50,6 +50,9 @@ class PostsController extends Controller
         $post->created_by = 9;
         $post->save();
 
+        $request->session()->flash('successMessage',"Successfully uploaded new post.");
+        
+
         return redirect()->action('PostsController@index');
 
     }
@@ -65,6 +68,16 @@ class PostsController extends Controller
         $posts = \App\Models\Post::find($id);
         $data = [];
         $data['post'] = $posts;
+
+
+        if(!$posts) {
+
+            \Session::flash('errorMessage', "Post not found");
+
+            return redirect()->action('PostsController@index');
+
+        }
+
         return view('posts.show', $data);
     }
 
@@ -78,6 +91,10 @@ class PostsController extends Controller
     {
 
         $post = \App\Models\Post::find($id);
+
+        if(!$post) {
+            $request->session()->flash('errorMessage',"No such post.");
+        }
 
         return view('posts.edit')->with('post', $post);
 
@@ -115,6 +132,7 @@ class PostsController extends Controller
     {
 
     $posts = \App\Models\Post::find($id);
+
     $data['posts'] = $posts;
  
     $posts->delete();
