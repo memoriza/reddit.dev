@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 
 class PostsController extends Controller
 {
@@ -15,8 +16,10 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return 'this is the index';
+    {   
+        $posts = \App\Models\Post::paginate(4);
+        $data['posts'] = $posts;
+        return view('posts.index', $data);
     }
 
     /**
@@ -37,7 +40,18 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        return back()->withInput();
+
+        $this->validate($request, Post::$rules);
+
+        $post = new \App\Models\Post();
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->url = $request->url;
+        $post->created_by = 9;
+        $post->save();
+
+        return redirect()->action('PostsController@index');
+
     }
 
     /**
@@ -48,7 +62,10 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return "what is up show";
+        $posts = \App\Models\Post::find($id);
+        $data = [];
+        $data['post'] = $posts;
+        return view('posts.show', $data);
     }
 
     /**
@@ -59,7 +76,11 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-       return view('posts.edit');
+
+        $post = \App\Models\Post::find($id);
+
+        return view('posts.edit')->with('post', $post);
+
     }
 
     /**
@@ -71,7 +92,16 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-          return back()->withInput();
+        
+        $post = \App\Models\Post::find($id);
+
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->url = $request->url;
+        $post->created_by = 9;
+        $post->save();
+  
+        return view('posts.show')->with('post', $post);
     }
 
     /**
@@ -83,6 +113,13 @@ class PostsController extends Controller
     public function destroy($id)
 
     {
-          return "data deleted from ID " . $id;
+
+    $posts = \App\Models\Post::find($id);
+    $data['posts'] = $posts;
+ 
+    $posts->delete();
+   
+    return redirect()->action('PostsController@index');    
+          
     }
 }
