@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use Session;
+use App\Models;
 
 class PostsController extends Controller
 {
@@ -17,7 +19,7 @@ class PostsController extends Controller
      */
     public function index()
     {   
-        $posts = \App\Models\Post::orderBy('created_at')->paginate(4);
+        $posts = Post::orderBy('created_at', 'desc')->paginate(4);
         $data['posts'] = $posts;
         return view('posts.index', $data);
     }
@@ -43,7 +45,7 @@ class PostsController extends Controller
 
         $this->validate($request, Post::$rules);
 
-        $post = new \App\Models\Post();
+        $post = new Post();
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
@@ -51,9 +53,7 @@ class PostsController extends Controller
         $post->save();
 
         $request->session()->flash('successMessage',"Successfully uploaded new post.");
-        
-
-        return redirect()->action('PostsController@index');
+        return redirect()->action('PostsController@show', [$post->id]);
 
     }
 
@@ -65,17 +65,16 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $posts = \App\Models\Post::find($id);
+        $posts = Post::find($id);
         $data = [];
         $data['post'] = $posts;
 
 
         if(!$posts) {
 
-            \Session::flash('errorMessage', "Post not found");
-
+            Session::flash('errorMessage', "Post not found");
             return redirect()->action('PostsController@index');
-
+           
         }
 
         return view('posts.show', $data);
@@ -90,10 +89,11 @@ class PostsController extends Controller
     public function edit($id)
     {
 
-        $post = \App\Models\Post::find($id);
+        $post = Post::find($id);
 
         if(!$post) {
             $request->session()->flash('errorMessage',"No such post.");
+            return redirect()->action('PostsController@index');
         }
 
         return view('posts.edit')->with('post', $post);
@@ -110,7 +110,14 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         
-        $post = \App\Models\Post::find($id);
+        $post = Post::find($id);
+
+        if(!$post) {
+
+            Session::flash('errorMessage', "Post not found");
+            return redirect()->action('PostsController@index');
+
+        }
 
         $post->title = $request->title;
         $post->content = $request->content;
@@ -131,13 +138,20 @@ class PostsController extends Controller
 
     {
 
-    $posts = \App\Models\Post::find($id);
+        $posts = Post::find($id);
 
-    $data['posts'] = $posts;
- 
-    $posts->delete();
-   
-    return redirect()->action('PostsController@index');    
-          
+        if(!$posts) {
+
+            Session::flash('errorMessage', "Post not found");
+            return redirect()->action('PostsController@index');
+
+        }
+
+        $data['posts'] = $posts;
+     
+        $posts->delete();
+       
+        return redirect()->action('PostsController@index');    
+              
     }
 }
