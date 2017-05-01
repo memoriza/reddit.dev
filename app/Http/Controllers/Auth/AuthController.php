@@ -29,7 +29,7 @@ class AuthController extends Controller
 
     // this is optional if you used the default values in your routes.php file !!
 
-    protected $loginPath = 'auth/login';
+    protected $loginPath = '/login';
 
 
     /**

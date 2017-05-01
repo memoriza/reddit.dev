@@ -11,6 +11,7 @@
 					Title: {{ $post->title }}
 				</a>
 			</div><br>
+			<p>Written by: {{$post->user->name}}</p>
 			<div>
 				Content: {{ $post->content }}
 			</div><br>
