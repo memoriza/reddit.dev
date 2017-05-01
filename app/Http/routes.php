@@ -11,65 +11,46 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/add/{number}/{number2}', 'HomeController@add');
 
+Route::get('/sayhello/{name}', 'HomeController@sayHello');
 
+Route::get('/rolldice/{guess}', 'HomeController@rolldice'); 
 
-Route::get('/increment/{number}', function ($number) {
+Route::get('/', 'HomeController@showWelcome');
 
-	if (is_numeric($number)) {
+Route::get('/increment/{number}', 'HomeController@increment');
 
-		$data = ['number' => $number];
+Route::get('/uppercase/{word}/', 'HomeController@uppercase');
 
-	}
+//CRUD operations for posts
 
-	return view('increment', $data);
+Route::resource('posts', 'PostsController');
 
-});
+Route::get('orm-test', function() {
 
-Route::get('/add/{number}/{number2}', function ($number, $number2) {
+	// $user = new \App\User();
+	// $user->name = 'Kyle';
+	// $user->email = 'kyle@gmail.com';
+	// $user->password = 'password';
+	// $user->save();
 
-	return $number + $number2;
+	// $post = new \App\Models\Post();
+	// $post->title = 'My first post';
+	// $post->content = 'My first post content';
+	// $post->url = 'http://codeup.com';
+	// $post->created_by = $user->id;
+	// $post->save();
 
-});
-
-Route::get('/sayhello/{name}', function ($name = "World") {
-
-	if($name == 'dylan') {
-		return "HOWDY " . strtoupper($name). "!!!";
-	}
-    return "Hello," . strtoupper(" " . $name . "!");
-
-});
-
-Route::get('/uppercase/{word}/', function ($word) {
-	
-	$data = ['upperword' => strtoupper($word), 'word' => $word];
-
-	return view('uppercase', $data);
+	return \App\Models\Post::all();
 
 });
 
 
 
-Route::get('/roll-dice/{guess}', function($guess = 1)
 
-{
-	$diceroll = random_int(1, 6);
 
-	$data = [];
 
-	$data['guess'] = $guess;
-	$data['diceroll'] = $diceroll;
 
-	if(!is_numeric($guess) || $guess > 6 || $guess < 1)
-		return "you guessed a non numeric number of your guess was not between 1 and 6";
 
-	if ($data['guess'] == $data['diceroll']) {
-		echo "you matched the guess and number!!!";
-	}
-    return view('roll-dice', $data);
-		   
-});
+

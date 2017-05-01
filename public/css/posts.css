@@ -1,0 +1,9 @@
+body {
+	background-color: #E8C1C5;
+}
+a {
+	color: #725AC1;
+}
+ul.pagination:hover {
+	color: #E8C1C5;
+}
