@@ -6,15 +6,23 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\User;
 use App\Models\Post;
 use Session;
+use Auth;
 use App\Models;
 use Log;
 
 
 class PostsController extends Controller
 {
+
+    public function __construct() 
+    {
+        $this->middleware('auth', ['except' => ['index','show']] );
+
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -53,7 +61,7 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = $user->id;
+        $post->created_by = Auth::id();
         $post->save();
 
         Log::info('New Post created successfully', $request->all());

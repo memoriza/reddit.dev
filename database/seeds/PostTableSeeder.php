@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\User;
 use App\Models\Post;
 
 class PostTableSeeder extends Seeder
