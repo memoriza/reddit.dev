@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Post;
 use Session;
 use App\Models;
+use Log;
+
 
 class PostsController extends Controller
 {
@@ -31,7 +34,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-         return view('posts.create');
+        
+        return view('posts.create');
     }
 
     /**
@@ -49,8 +53,10 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = 9;
+        $post->created_by = $user->id;
         $post->save();
+
+        Log::info('New Post created successfully', $request->all());
 
         $request->session()->flash('successMessage',"Successfully uploaded new post.");
         return redirect()->action('PostsController@show', [$post->id]);
@@ -66,15 +72,16 @@ class PostsController extends Controller
     public function show($id)
     {
         $posts = Post::find($id);
+
         $data = [];
         $data['post'] = $posts;
 
-
         if(!$posts) {
 
+            Log::info("Post with ID of $id cannot be found.");
             Session::flash('errorMessage', "Post not found");
-            return redirect()->action('PostsController@index');
-           
+            abort(404);
+            
         }
 
         return view('posts.show', $data);
@@ -92,8 +99,11 @@ class PostsController extends Controller
         $post = Post::find($id);
 
         if(!$post) {
-            $request->session()->flash('errorMessage',"No such post.");
-            return redirect()->action('PostsController@index');
+
+            Log::info("Post with ID of $id cannot be found.");
+            Session::flash('errorMessage', "Post not found");
+            abort(404);
+            
         }
 
         return view('posts.edit')->with('post', $post);
@@ -111,18 +121,20 @@ class PostsController extends Controller
     {
         
         $post = Post::find($id);
+        $user = User::find($id);
 
         if(!$post) {
 
+            Log::info("Post with ID of $id cannot be found.");
             Session::flash('errorMessage', "Post not found");
-            return redirect()->action('PostsController@index');
-
+            abort(404);
+            
         }
 
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = 9;
+        $post->created_by = $user->id;
         $post->save();
   
         return view('posts.show')->with('post', $post);
@@ -142,9 +154,10 @@ class PostsController extends Controller
 
         if(!$posts) {
 
+            Log::info("Post with ID $id cannot be found.");
             Session::flash('errorMessage', "Post not found");
-            return redirect()->action('PostsController@index');
-
+            abort(404);
+            
         }
 
         $data['posts'] = $posts;
