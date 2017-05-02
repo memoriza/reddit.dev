@@ -29,9 +29,13 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
-        $posts = Post::orderBy('created_at', 'desc')->paginate(4);
+        if(isset($request->search)) {
+            $posts = Post::with('user')->where('title','like', "%$request->search%")->where('content','like', "%$request->search%")->orderBy('created_at', 'desc')->paginate(5);;
+        } else {
+            $posts = Post::orderBy('created_at', 'desc')->with('user')->paginate(5);
+        }
         $data['posts'] = $posts;
         return view('posts.index', $data);
     }
@@ -113,6 +117,10 @@ class PostsController extends Controller
             Session::flash('errorMessage', "Post not found");
             abort(404);
             
+        }
+        if($post->user->id != Auth::id()) {
+            Session::flash('errorMessage', "Only the post author can edit post.");
+            return redirect()->action('PostsController@index'); 
         }
 
         return view('posts.edit')->with('post', $post);

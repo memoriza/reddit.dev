@@ -16,6 +16,7 @@ class Post extends BaseModel
             'url' => 'required|url'
     ];
 
+    // connecting each user to the respective posts 
     public function user(){
     	return $this->belongsTo('App\User', 'created_by');
     }

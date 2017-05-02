@@ -53,7 +53,9 @@ Route::get('orm-test', function() {
 	// $post->created_by = $user->id;
 	// $post->save();
 
-	return \App\Models\Post::all();
+	$posts = \App\Models\Post::where('created_by',5)->get();
+
+	return $posts;
 
 });
 

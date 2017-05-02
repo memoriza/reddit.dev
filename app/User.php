@@ -24,7 +24,8 @@ class User extends BaseModel implements AuthenticatableContract,
      */
     protected $table = 'users';
 
-        public function posts(){
+    //connecting the posts to the user who created the post
+    public function posts(){
         return $this->hasMany('App\Models\Post', 'created_by');
     }
 
