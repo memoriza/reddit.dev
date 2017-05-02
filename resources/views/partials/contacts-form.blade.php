@@ -13,6 +13,20 @@ Title: <input class="form-group" type="text"
 			{!! $errors->first('title', '<span class="help-block">Title error</span>') !!}
 
 		@endif
+		
+Url: <input class="form-group" type="text" 
+		name="url" 
+		id="url" 
+		@if(isset($post->url))
+			value="{{ $post->url }}"
+		@else
+			value="{{ old('url') }}"
+		@endif
+		><br>
+		@if ($errors->has('url'))
+			{!! $errors->first('url'), '<span class="help-block">URL ERROR</span>' !!}
+		@endif
+
 Content: <input class="form-group" type="text" 
 		name="content"
 		id="content" 
@@ -26,15 +40,3 @@ Content: <input class="form-group" type="text"
 			{!! $errors->first('content', '<span class="help-block">Content ERROR</span>') !!}
 
 		@endif
-Url: <input class="form-group" type="text" 
-	name="url" 
-	id="url" 
-	@if(isset($post->url))
-			value="{{ $post->url }}"
-		@else
-			value="{{ old('url') }}"
-		@endif
-	><br>
-	@if ($errors->has('url'))
-			{!! $errors->first('url'), '<span class="help-block">URL ERROR</span>' !!}
-	@endif

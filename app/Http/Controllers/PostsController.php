@@ -6,23 +6,36 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\User;
 use App\Models\Post;
 use Session;
+use Auth;
 use App\Models;
 use Log;
 
 
 class PostsController extends Controller
 {
+
+    public function __construct() 
+    {
+
+        $this->middleware('auth', ['except' => ['index','show']] );
+        // another way to state how to filter out results
+        // $this->middleware('auth', ['only' => ['create','store','edit','update','destroy']])
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
-        $posts = Post::orderBy('created_at', 'desc')->paginate(4);
+        if(isset($request->search)) {
+            $posts = Post::with('user')->where('title','like', "%$request->search%")->where('content','like', "%$request->search%")->orderBy('created_at', 'desc')->paginate(5);;
+        } else {
+            $posts = Post::orderBy('created_at', 'desc')->with('user')->paginate(5);
+        }
         $data['posts'] = $posts;
         return view('posts.index', $data);
     }
@@ -53,7 +66,7 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = $user->id;
+        $post->created_by = Auth::id();
         $post->save();
 
         Log::info('New Post created successfully', $request->all());
@@ -104,6 +117,10 @@ class PostsController extends Controller
             Session::flash('errorMessage', "Post not found");
             abort(404);
             
+        }
+        if($post->user->id != Auth::id()) {
+            Session::flash('errorMessage', "Only the post author can edit post.");
+            return redirect()->action('PostsController@index'); 
         }
 
         return view('posts.edit')->with('post', $post);
