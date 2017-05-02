@@ -29,13 +29,32 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {   
-        if(isset($request->search)) {
-            $posts = Post::with('user')->where('title','like', "%$request->search%")->where('content','like', "%$request->search%")->orderBy('created_at', 'desc')->paginate(5);;
+
+    public function search(Request $request) {
+
+        if ($request->has('search')) {
+
+            $posts = Post::join('users', 'created_by', '=', 'users.id')
+                ->where('title','like', "%$request->search%")
+                ->orwhere('content','like', "%$request->search%")
+                ->orwhere('name', 'like', "%$request->search%")
+                ->orderBy('posts.created_at', 'desc')
+                ->paginate(5);
+
         } else {
             $posts = Post::orderBy('created_at', 'desc')->with('user')->paginate(5);
         }
+
+        $data['posts'] = $posts;
+
+        return view('posts.index', $data);
+
+    }
+    public function index(Request $request)
+    {   
+     
+        $posts = Post::orderBy('created_at', 'desc')->with('user')->paginate(5);
+
         $data['posts'] = $posts;
         return view('posts.index', $data);
     }
@@ -155,6 +174,29 @@ class PostsController extends Controller
         $post->save();
   
         return view('posts.show')->with('post', $post);
+    }
+
+    public function account(Request $request, $id)
+    {
+        
+        $user = User::find($id);
+
+        if(!$user->id) {
+
+            Log::info("User not found.");
+            Session::flash('errorMessage', "User not found");
+            abort(404);
+            
+        }
+
+        
+        $user->name = $request->name;
+        $user->email = $request->content;
+        $user->password = $request->url;
+        
+        $user->save();
+  
+        return view('posts.show')->with('user', $user);
     }
 
     /**

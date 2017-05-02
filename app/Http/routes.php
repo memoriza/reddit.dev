@@ -24,6 +24,8 @@ Route::get('/increment/{number}', 'HomeController@increment');
 Route::get('/uppercase/{word}/', 'HomeController@uppercase');
 
 //CRUD operations for posts
+Route::get('/search','PostsController@search');
+Route::post('/account','PostsController@account');
 
 Route::resource('posts', 'PostsController');
 

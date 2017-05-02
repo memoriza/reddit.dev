@@ -16,24 +16,10 @@
 		@if (Session::has('errorMessage'))
 			<div class="alert alert-danger">{{ session('errorMessage') }}</div>
 		@endif
-		
-		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@showWelcome') }}">Welcome</a></p>
-		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@uppercase') }}">UPPERCASE</a></p>
-		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@rolldice') }}">Dice Roll</a></p>
-		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@add') }}">Add</a></p>
-		<p class ="btn btn-outline-success"><a href="{{ action('HomeController@increment') }}">Increment</a></p>
 
-		@if (Auth::check()) 
-
-			<p>{{ Auth::user()->name }}</p>
-			<p><a href="{{ action('Auth\AuthController@getLogout') }}">Log Out</a></p>
-			
-		@else 
 		
-			<p><a href="{{ action('Auth\AuthController@getLogin') }}">Log In</a></p>
+		@include('partials.header')
 		
-		@endif
-
 		<br>
 
 		@yield('header')
