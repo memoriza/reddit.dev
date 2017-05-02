@@ -1,45 +1,55 @@
-@section('header')
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+  	    <div class="navbar-header">
+      		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        	<span class="sr-only">Toggle navigation</span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+	        	<span class="icon-bar"></span>
+      		</button>
+      		<a class="navbar-brand" href="#">Reddit is dead</a>
+    	</div>
+    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+   			<ul class="nav navbar-nav">	
+	  			<li class="dropdown">
+		  			<a class="dropdown-toggle" data-toggle="dropdown">Navigation<span class="caret"></span></a>
+			  		<ul	class="row dropdown-menu">
+						<li><a href="{{ action('PostsController@index') }}">Index of Posts</a></li>
+						<li><a href="{{ action('PostsController@create') }}">Create a new post</a></li>
+						@if (Auth::check()) 
+							<li><a href="{{ action('PostsController@account',Auth::id()) }}">Edit Account</a></li>
+							<li><a href="{{ action('PostsController@password',Auth::id()) }}">Edit Password</a></li>  
+							<li><a href="{{ action('Auth\AuthController@getLogout') }}">Log Out</a></li>
 
+						@else 
 
-<nav class="navbar navbar-collapse">
-   
-  	<div class="nav navbar-nav">
-  		<li>
-			{!! csrf_field() !!}
-  			<form method="GET" class="col-md-12 col-xs-12 col-sm-12 form-group" action="{{ action('PostsController@search') }}">
-				Search: <input class="form-control" type="text" name="search" id="search">
-				<input type="submit" value="submit">
-			</form>
-  		</li>
-  		<li class=" btn-secondary dropdown">
-	  		<a class="dropdown-toggle" data-toggle="dropdown">Navigation<span class="caret"></span></a>
-	  		<ul	class="row dropdown-menu">
-				<li><a href="{{ action('PostsController@index') }}">Index of Posts</a></li>
-				<li><a href="{{ action('PostsController@create') }}">Create a new post</a></li>
-				@if (Auth::check()) 
-				<li><a href="{{ action('PostsController@account') }}">Edit Account</a></li> 
-				<li><a href="{{ action('Auth\AuthController@getLogout') }}">Log Out</a></li>
-	
-				@else 
+							<li><a href="{{ action('Auth\AuthController@getLogin') }}">Log In</a></li>
 
-				<li><a href="{{ action('Auth\AuthController@getLogin') }}">Log In</a></li>
+						@endif
 
-				@endif
-
-			<!-- 	<li><a href="{{ action('HomeController@rolldice') }}">Dice Roll</a></li>
-				<li><a href="{{ action('HomeController@add') }}">Add</a></li>
-				<li><a href="{{ action('HomeController@increment') }}">Increment</a></li> -->
+					<!-- 	<li><a href="{{ action('HomeController@rolldice') }}">Dice Roll</a></li>
+						<li><a href="{{ action('HomeController@add') }}">Add</a></li>
+						<li><a href="{{ action('HomeController@increment') }}">Increment</a></li> -->
+					</ul>
+				</li>
+				<li>
+					<form method="GET" class="navbar-form navbar-left" action="{{ action('PostsController@search') }}">
+						{!! csrf_field() !!}
+						<div class="form-group">
+							Search: <input class="form-control" type="text" name="search" id="search">
+						</div>
+						<input class=" btn btn-primary" type="submit" value="submit">
+					</form>
+				</li>
 			</ul>
-		</li>
+		</div>
 	</div>
-	<br>
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
-
-	@if (Auth::check()) 
-		<h4 class="col-xs-12 col-sm-12 col-md-12">Welcome: {{ Auth::user()->name }}</h4>
-	@endif
-		
-
-
 </nav>
+<div class="col-xs-12 col-sm-12 col-md-12">
+	@if (Auth::check()) 
+		<h4>Welcome: {{ Auth::user()->name }}</h4>
+	@endif
+</div>
+
+		
 	

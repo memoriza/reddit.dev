@@ -25,7 +25,10 @@ Route::get('/uppercase/{word}/', 'HomeController@uppercase');
 
 //CRUD operations for posts
 Route::get('/search','PostsController@search');
-Route::post('/account','PostsController@account');
+Route::get('/account/{id}','PostsController@account');
+Route::post('/account/{id}','PostsController@updateAccount');
+Route::get('/password/{id}','PostsController@password');
+Route::post('/password/{id}','PostsController@updatePassword');
 
 Route::resource('posts', 'PostsController');
 

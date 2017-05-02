@@ -11,7 +11,7 @@
 	<main class="container">
 
 		@if (Session::has('successMessage'))
-			<div class"alert alert-success">{{ session('successMessage') }}</div>
+			<div class="alert alert-success">{{ session('successMessage') }}</div>
 		@endif
 		@if (Session::has('errorMessage'))
 			<div class="alert alert-danger">{{ session('errorMessage') }}</div>
@@ -20,8 +20,6 @@
 		
 		@include('partials.header')
 		
-		<br>
-
 		@yield('header')
 
 	    @yield('content')

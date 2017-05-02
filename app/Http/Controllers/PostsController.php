@@ -39,7 +39,7 @@ class PostsController extends Controller
                 ->orwhere('content','like', "%$request->search%")
                 ->orwhere('name', 'like', "%$request->search%")
                 ->orderBy('posts.created_at', 'desc')
-                ->paginate(5);
+                ->paginate(5)->appends(['search' => $request->search]);
 
         } else {
             $posts = Post::orderBy('created_at', 'desc')->with('user')->paginate(5);
@@ -66,7 +66,6 @@ class PostsController extends Controller
      */
     public function create()
     {
-        
         return view('posts.create');
     }
 
@@ -180,24 +179,66 @@ class PostsController extends Controller
     {
         
         $user = User::find($id);
-
-        if(!$user->id) {
-
-            Log::info("User not found.");
-            Session::flash('errorMessage', "User not found");
-            abort(404);
-            
-        }
-
-        
-        $user->name = $request->name;
-        $user->email = $request->content;
-        $user->password = $request->url;
-        
-        $user->save();
   
-        return view('posts.show')->with('user', $user);
+        return view('posts.account')->with('user', $user);
     }
+
+    public function updateAccount (Request $request, $id){
+
+        $user = User::find($id);
+
+        $rules = [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255'
+        ];
+
+        $this->validate($request, $rules);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        $user->save();
+
+        Session::flash('successMessage', "$user->name account updated successfully.");
+
+        return redirect()->action('PostsController@index');
+
+    }
+
+    public function password(Request $request, $id)
+    {
+        
+        $user = User::find($id);
+  
+        return view('posts.password')->with('user', $user);
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        
+        $user = User::find($id);
+
+
+        $rules = [
+            'password' => 'required|confirmed|min:6',
+        ];
+
+        $this->validate($request, $rules);
+
+        $user->password = $request->password;
+
+        $user->save();
+
+        Session::flash('successMessage', "Password updated successfully.");
+         
+        
+
+       return redirect()->action('PostsController@index');
+
+    }
+
+
+
 
     /**
      * Remove the specified resource from storage.
