@@ -1,6 +1,7 @@
-{!! csrf_field() !!}
-
-<form method="GET" class="col-md-12 col-xs-12 col-sm- form-group" action="{{ action('PostsController@search') }}">
-	Search: <input class="form-control" type="text" name="search" id="search">
-	<input type="submit" value="Submit">
+<form method="GET" class="navbar-form navbar-left" action="{{ action('PostsController@search') }}">
+	{!! csrf_field() !!}
+	<div class="form-group">
+		Search: <input class="form-control" type="text" name="search" id="search">
+	</div>
+	<input class=" btn btn-primary" type="submit" value="submit">
 </form>
