@@ -11,7 +11,7 @@
 		<div>
 
 			<div>
-				<a href="{{ action('PostsController@edit', [$post->id]) }}">
+				<a href="{{ action('PostsController@show', [$post->id]) }}">
 					Title: {{ $post->title }}
 				</a>
 			</div><br>

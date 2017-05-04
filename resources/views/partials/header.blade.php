@@ -7,21 +7,25 @@
 	        	<span class="icon-bar"></span>
 	        	<span class="icon-bar"></span>
       		</button>
-      		<a class="navbar-brand" href="{{ action('PostsController@index') }}">Reddit is dead</a>
-      			<p>@if (Auth::check())
-					Hello: {{ Auth::user()->name }}
-				@endif
-				</p>
+      		<a class="navbar-brand" href="{{ action('PostsController@index') }}">Reddit is dead 
+
+      			@if (Auth::check())
+					<strong>|| Hello: {{ Auth::user()->name }}</strong>
+				@endif</a>
+      		
     	</div>
     	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
    			<ul class="nav navbar-nav">	
 	  			<li class="dropdown">
 		  			<a class="dropdown-toggle" data-toggle="dropdown">Navigation<span class="caret"></span></a>
 			  		<ul	class="row dropdown-menu">
+
 						<li><a href="{{ action('PostsController@index') }}">Index of Posts</a></li>
 						<li><a href="{{ action('PostsController@create') }}">Create a new post</a></li>
 						<li><a href="{{ action('Auth\AuthController@getRegister') }}">User Registration</a></li>
+
 						@if (Auth::check()) 
+
 							<li><a href="{{ action('PostsController@account',Auth::id()) }}">Edit Account</a></li>
 							<li><a href="{{ action('PostsController@password',Auth::id()) }}">Edit Password</a></li>  
 							<li><a href="{{ action('Auth\AuthController@getLogout') }}">Log Out</a></li>

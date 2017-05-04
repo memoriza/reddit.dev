@@ -166,8 +166,10 @@ class PostsController extends Controller
         }
 
         if ($post->created_by != Auth::id()) {
+
             Session::flash('errorMessage', "Only the post author can edit post.");
             return redirect()->action('PostsController@index'); 
+            
         }
 
         return view('posts.edit')->with('post', $post);

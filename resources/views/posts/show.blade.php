@@ -7,7 +7,12 @@
 		<p>Url: {!!$post->url; !!}</p>
 		<p>Content: {!!$post->content;!!}</p>
 	</div>
+	
+	@if (Auth::check())
+		<a class= "btn-warning btn" href="{{ action('PostsController@edit', [$post->id]) }}">Edit Post</a>
+	@endif
 
 	<a class ="btn-success btn" href="{{ action('PostsController@index') }}">Back to Posts</a>
+
 
 @stop
