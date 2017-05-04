@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	
+
     <title>Josh is Reddit</title>
 
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/posts.css">
    
 </head>
-<body> 
+<body style="background-image: url('Amethyst.jpg')"> 
 	<main class="container img-responsive">
 
 		@include('partials.header')

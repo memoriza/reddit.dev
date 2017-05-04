@@ -2,19 +2,7 @@
 
 @section('content')
 
-
-
-<div class="col-xs-12 col-sm-12 col-md-12">
-
-	@if (Auth::check()) 
-		
-		Hello, {{ Auth::user()->name }}
-
-	@endif
-
-</div>
-
-<div class="col-md-12">
+<div class="font col-md-12">
 
 	<h1>Posts from Users</h1>
 
