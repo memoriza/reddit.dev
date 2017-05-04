@@ -1,12 +1,13 @@
 @extends('layouts.master')
 
 @section('content')
+	<div>
+		<h5>Title: {!!$post->title;!!}</h5>
+		<p>Written by: {{$post->user->name}}</p>
+		<p>Url: {!!$post->url; !!}</p>
+		<p>Content: {!!$post->content;!!}</p>
+	</div>
 
-	<h3>Title: {!!$post->title;!!}</h3><br>
-	<h3>Written by: {{$post->user->name}}</h3>
-	<h3>Url {!!$post->url; !!}</h3><br>
-	<h3>Content {!!$post->content;!!}</h3><br>
-	
+	<a class ="btn-success btn" href="{{ action('PostsController@index') }}">Back to Posts</a>
 
-	<p class ="btn btn-outline-success"><a href="{{ action('PostsController@index') }}">Index of Posts</a></p>
 @stop

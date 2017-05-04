@@ -69,6 +69,34 @@ class PostsController extends Controller
         return view('posts.create');
     }
 
+    public function vote(Request $request)
+    {
+        if($request->ajax()){
+
+
+            $post = \App\Models\Post::where('id',$request->post)->first();
+
+
+            if($post){
+
+                if($post->vote($request->action)){
+                    return response()->json([
+                        'status' => 'success',
+                        'points' => $post->getPointsAttribute(),
+                    ], 201);
+                } else{
+                    return response()->json([
+                        'error' => 'User not logged in.'
+                    ], 401);
+                }
+            } else{
+                return response()->json([
+                    'error' => 'post has been deleted.'
+                ], 401);
+            }
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -136,6 +164,7 @@ class PostsController extends Controller
             abort(404);
             
         }
+
         if($post->user->id != Auth::id()) {
             Session::flash('errorMessage', "Only the post author can edit post.");
             return redirect()->action('PostsController@index'); 

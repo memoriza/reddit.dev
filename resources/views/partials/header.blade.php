@@ -16,6 +16,7 @@
 			  		<ul	class="row dropdown-menu">
 						<li><a href="{{ action('PostsController@index') }}">Index of Posts</a></li>
 						<li><a href="{{ action('PostsController@create') }}">Create a new post</a></li>
+						<li><a href="{{ action('Auth\AuthController@getRegister') }}">User Registration</a></li>
 						@if (Auth::check()) 
 							<li><a href="{{ action('PostsController@account',Auth::id()) }}">Edit Account</a></li>
 							<li><a href="{{ action('PostsController@password',Auth::id()) }}">Edit Password</a></li>  
@@ -27,9 +28,6 @@
 
 						@endif
 
-					<!-- 	<li><a href="{{ action('HomeController@rolldice') }}">Dice Roll</a></li>
-						<li><a href="{{ action('HomeController@add') }}">Add</a></li>
-						<li><a href="{{ action('HomeController@increment') }}">Increment</a></li> -->
 					</ul>
 				</li>
 				<li>
@@ -45,11 +43,7 @@
 		</div>
 	</div>
 </nav>
-<div class="col-xs-12 col-sm-12 col-md-12">
-	@if (Auth::check()) 
-		<h4>Welcome: {{ Auth::user()->name }}</h4>
-	@endif
-</div>
+
 
 		
 	

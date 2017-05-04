@@ -29,7 +29,7 @@ Route::get('/account/{id}','PostsController@account');
 Route::post('/account/{id}','PostsController@updateAccount');
 Route::get('/password/{id}','PostsController@password');
 Route::post('/password/{id}','PostsController@updatePassword');
-
+Route::post('/posts/vote','PostsController@vote');
 Route::resource('posts', 'PostsController');
 
 // authentication routes
