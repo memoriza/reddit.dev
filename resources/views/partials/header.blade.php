@@ -8,6 +8,10 @@
 	        	<span class="icon-bar"></span>
       		</button>
       		<a class="navbar-brand" href="{{ action('PostsController@index') }}">Reddit is dead</a>
+      			<p>@if (Auth::check())
+					Hello: {{ Auth::user()->name }}
+				@endif
+				</p>
     	</div>
     	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
    			<ul class="nav navbar-nav">	
@@ -27,7 +31,7 @@
 							<li><a href="{{ action('Auth\AuthController@getLogin') }}">Log In</a></li>
 
 						@endif
-
+						
 					</ul>
 				</li>
 				<li>

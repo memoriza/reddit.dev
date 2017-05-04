@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="font col-md-12">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 	<h1>Posts from Users</h1>
 

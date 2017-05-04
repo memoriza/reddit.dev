@@ -2,18 +2,20 @@
 
 @section('content')
 
+
 <form method="POST" action="{{ action('Auth\AuthController@postRegister') }}">
+
     {!! csrf_field() !!}
 
     <div class="form-group">name
-        <input class="form-control" type="name" name="name" value="{{ old('email') }}">
+        <input class="form-control" type="name" name="name" value="{{ old('name') }}">
         @if( $errors->has('name') )
         	{{ $errors->first('name') }}
         @endif
     </div>
 
     <div class="form-group">email
-        <input class="form-control" type="email" name="email" id="email">
+        <input class="form-control" type="email" name="email" id="email" value="{{ old('email') }}">
          @if( $errors->has('email') )
         	{{ $errors->first('email') }}
         @endif
