@@ -2,11 +2,31 @@ body {
 	background-image: url('Amethyst.jpg');
 	background-color: #90BAAD;
 	color: #4C1C00;
+	opacity: .90;
 }
 
 main.container {
 	background-color: #F2E5D7;
 	color: #EE4B6A;
+}
+
+body > main > nav > div {
+
+	background-image: url('SWL.jpg');
+	background-position: center;
+	color: white;
+
+}
+
+#navbar6 > ul > li > a {
+
+	color: white;
+
+}
+
+body > main > nav > div > div.navbar-header > h3 {
+
+	color: white;
 }
 
 a {

@@ -30,7 +30,8 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function search(Request $request) {
+    public function search(Request $request) 
+    {
 
         if ($request->has('search')) {
 
@@ -50,6 +51,7 @@ class PostsController extends Controller
         return view('posts.index', $data);
 
     }
+
     public function index(Request $request)
     {   
      
@@ -57,6 +59,7 @@ class PostsController extends Controller
 
         $data['posts'] = $posts;
         return view('posts.index', $data);
+
     }
 
     /**
@@ -66,7 +69,9 @@ class PostsController extends Controller
      */
     public function create()
     {
+
         return view('posts.create');
+        
     }
 
     public function vote(Request $request)
@@ -169,7 +174,7 @@ class PostsController extends Controller
 
             Session::flash('errorMessage', "Only the post author can edit post.");
             return redirect()->action('PostsController@index'); 
-            
+
         }
 
         return view('posts.edit')->with('post', $post);
