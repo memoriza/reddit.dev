@@ -29,15 +29,37 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {   
-        if(isset($request->search)) {
-            $posts = Post::with('user')->where('title','like', "%$request->search%")->where('content','like', "%$request->search%")->orderBy('created_at', 'desc')->paginate(5);;
+
+    public function search(Request $request) 
+    {
+
+        if ($request->has('search')) {
+
+            $posts = Post::join('users', 'created_by', '=', 'users.id')
+                ->where('title','like', "%$request->search%")
+                ->orwhere('content','like', "%$request->search%")
+                ->orwhere('name', 'like', "%$request->search%")
+                ->orderBy('posts.created_at', 'desc')
+                ->paginate(5)->appends(['search' => $request->search]);
+
         } else {
             $posts = Post::orderBy('created_at', 'desc')->with('user')->paginate(5);
         }
+
+        $data['posts'] = $posts;
+
+        return view('posts.index', $data);
+
+    }
+
+    public function index(Request $request)
+    {   
+     
+        $posts = Post::orderBy('created_at', 'desc')->with('user')->paginate(5);
+
         $data['posts'] = $posts;
         return view('posts.index', $data);
+
     }
 
     /**
@@ -47,8 +69,37 @@ class PostsController extends Controller
      */
     public function create()
     {
-        
+
         return view('posts.create');
+        
+    }
+
+    public function vote(Request $request)
+    {
+        if($request->ajax()){
+
+
+            $post = \App\Models\Post::where('id',$request->post)->first();
+
+
+            if($post){
+
+                if($post->vote($request->action)){
+                    return response()->json([
+                        'status' => 'success',
+                        'points' => $post->getPointsAttribute(),
+                    ], 201);
+                } else{
+                    return response()->json([
+                        'error' => 'User not logged in.'
+                    ], 401);
+                }
+            } else{
+                return response()->json([
+                    'error' => 'post has been deleted.'
+                ], 401);
+            }
+        }
     }
 
     /**
@@ -118,9 +169,12 @@ class PostsController extends Controller
             abort(404);
             
         }
-        if($post->user->id != Auth::id()) {
+
+        if ($post->created_by != Auth::id()) {
+
             Session::flash('errorMessage', "Only the post author can edit post.");
             return redirect()->action('PostsController@index'); 
+
         }
 
         return view('posts.edit')->with('post', $post);
@@ -138,7 +192,6 @@ class PostsController extends Controller
     {
         
         $post = Post::find($id);
-        $user = User::find($id);
 
         if(!$post) {
 
@@ -151,10 +204,72 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = $user->id;
+        $post->created_by = Auth::id();
         $post->save();
   
         return view('posts.show')->with('post', $post);
+    }
+
+    public function account(Request $request, $id)
+    {
+        
+        $user = User::find($id);
+  
+        return view('posts.account')->with('user', $user);
+    }
+
+    public function updateAccount (Request $request, $id){
+
+        $user = User::find($id);
+
+        $rules = [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255'
+        ];
+
+        $this->validate($request, $rules);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        $user->save();
+
+        Session::flash('successMessage', "$user->name account updated successfully.");
+
+        return redirect()->action('PostsController@index');
+
+    }
+
+    public function password(Request $request, $id)
+    {
+        
+        $user = User::find($id);
+  
+        return view('posts.password')->with('user', $user);
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        
+        $user = User::find($id);
+
+
+        $rules = [
+            'password' => 'required|confirmed|min:6',
+        ];
+
+        $this->validate($request, $rules);
+
+        $user->password = $request->password;
+
+        $user->save();
+
+        Session::flash('successMessage', "Password updated successfully.");
+         
+        
+
+       return redirect()->action('PostsController@index');
+
     }
 
     /**

@@ -24,7 +24,12 @@ Route::get('/increment/{number}', 'HomeController@increment');
 Route::get('/uppercase/{word}/', 'HomeController@uppercase');
 
 //CRUD operations for posts
-
+Route::get('/search','PostsController@search');
+Route::get('/account/{id}','PostsController@account');
+Route::post('/account/{id}','PostsController@updateAccount');
+Route::get('/password/{id}','PostsController@password');
+Route::post('/password/{id}','PostsController@updatePassword');
+Route::post('/posts/vote','PostsController@vote');
 Route::resource('posts', 'PostsController');
 
 // authentication routes

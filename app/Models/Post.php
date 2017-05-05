@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Votable;
+use Vote;
 
 class Post extends BaseModel
 
 {
+    use Votable;
+
 	protected $table = 'posts';
 
 	public static $rules = [
@@ -21,7 +25,9 @@ class Post extends BaseModel
     	return $this->belongsTo('App\User', 'created_by');
     }
 
-
+    public function votes() {
+        return $this->hasMany('App\Models\Vote','votable_id');
+    }
 
 
 
